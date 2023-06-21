@@ -17,22 +17,6 @@ def add_folder(request):
         response = {'error': 'Folder parameter is missing.'}
     return JsonResponse(response)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # import json
 # from django.http import JsonResponse
 # # from .models import Container 
