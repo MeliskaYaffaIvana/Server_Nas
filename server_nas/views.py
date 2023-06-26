@@ -31,7 +31,16 @@ def add_unix_user(request):
 
     try:
         subprocess.check_call(
-            '/usr/sbin/useradd -p $(openssl passwd -1 ' + userPass + ') -m -s /bin/bash -g hosting-users ' + userId)
+            ['/usr/sbin/useradd',
+             '-p',
+             subprocess.check_output(['openssl', 'passwd', '-1', userPass]).decode('utf-8').strip(),
+             '-m',
+             '-s',
+             '/bin/bash',
+             '-g',
+             'hosting-users',
+             userId],
+            shell=True)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
 
