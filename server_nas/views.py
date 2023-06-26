@@ -1,6 +1,26 @@
-import subprocess
+from subprocess import CalledProcessError, check_call
 import os
+import subprocess
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+@csrf_exempt
+def add_unix_user(request):
+    userPass = request.POST.get('userPass')
+    userId = request.POST.get('userId')
+
+    try:
+        check_call(
+            'useradd -p $(openssl passwd -1 ' + userPass + ') -m -s /bin/bash -g hosting-users '
+            + userId,
+            shell=True)
+    except CalledProcessError:
+        return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
+
+    return JsonResponse({'status': 'success', 'message': 'Unix user added'})
+
 
 def add_folder(request):
     folder = request.GET.get('folder')
