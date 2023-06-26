@@ -26,12 +26,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 def run_command_with_sudo(command):
     sudo_command = 'sudo ' + command
-    sudo_password = '1234'
+    sudo_password_bytes = b'1234'
+    sudo_password = sudo_password_bytes.decode()
 
     try:
         process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
-        sudo_password_bytes = (sudo_password + '\n').encode()
-        output, error = process.communicate(input=sudo_password_bytes)
+        # sudo_password_bytes = (sudo_password + '\n').encode()
+        output, error = process.communicate(input=sudo_password + '\n')
         
         
         if process.returncode != 0:
