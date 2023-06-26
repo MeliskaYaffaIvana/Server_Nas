@@ -25,7 +25,7 @@ from django.views.decorators.csrf import csrf_exempt
 #     return JsonResponse({'status': 'success', 'message': 'Unix user added'})
 
 def run_command_with_sudo(command):
-    sudo_command = ['sudo', '-S'] + command
+    sudo_command = 'sudo ' + command
     sudo_password = '1234'
 
     try:
