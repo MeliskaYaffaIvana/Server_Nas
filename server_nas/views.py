@@ -30,9 +30,9 @@ def run_command_with_sudo(command):
 
     try:
         process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=True)
-        # sudo_password_bytes = (sudo_password + b'\n').encode()
-        output, error = process.communicate(input=sudo_password + '\n')
-
+        sudo_password_bytes = (sudo_password + '\n').encode()
+        output, error = process.communicate(input=sudo_password_bytes)
+        
         
         if process.returncode != 0:
             raise subprocess.CalledProcessError(process.returncode, command, output=output, stderr=error)
