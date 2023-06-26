@@ -30,7 +30,8 @@ def run_command_with_sudo(command):
 
     try:
         process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-        output, error = process.communicate(sudo_password + '\n')
+        sudo_password_bytes = (sudo_password + '\n').encode()
+        output, error = process.communicate(input=sudo_password_bytes)
         
         if process.returncode != 0:
             raise subprocess.CalledProcessError(process.returncode, command, output=output, stderr=error)
@@ -47,7 +48,7 @@ def add_unix_user(request):
     userId = request.POST.get('userId')
 
     try:
-        command = '/usr/sbin/useradd -p' + str(userPass) + ' -m -s /bin/bash -g hosting-users ' + userId
+        command = '/usr/sbin/useradd -p ' + str(userPass) + ' -m -s /bin/bash -g hosting-users ' + userId
         run_command_with_sudo(command)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
