@@ -24,6 +24,23 @@ from django.views.decorators.csrf import csrf_exempt
 
 #     return JsonResponse({'status': 'success', 'message': 'Unix user added'})
 
+def run_command_with_sudo(command):
+    sudo_command = ['sudo', '-S'] + command
+    sudo_password = '1234'
+
+    try:
+        process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+        output, error = process.communicate(sudo_password + '\n')
+        
+        if process.returncode != 0:
+            raise subprocess.CalledProcessError(process.returncode, command, output=output, stderr=error)
+        
+        return output.strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing command: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 @csrf_exempt
 def add_unix_user(request):
     userPass = request.POST.get('userPass')
@@ -31,9 +48,7 @@ def add_unix_user(request):
 
     try:
         command = '/usr/sbin/useradd -p' + str(userPass) + ' -m -s /bin/bash -g hosting-users ' + userId
-        subprocess.check_call(
-            [command],
-            shell=True)
+        run_command_with_sudo(command)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
 
