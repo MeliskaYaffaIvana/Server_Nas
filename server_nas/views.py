@@ -30,8 +30,9 @@ def add_unix_user(request):
     userId = request.POST.get('userId')
 
     try:
+        command = '/usr/sbin/useradd -p' + str(userPass) + ' -m -s /bin/bash -g hosting-users ' + userId
         subprocess.check_call(
-            ['/usr/sbin/useradd -p 123 -m -s /bin/bash -g hosting-users userCoba'],
+            [command],
             shell=True)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
