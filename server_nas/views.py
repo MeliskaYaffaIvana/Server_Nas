@@ -4,40 +4,38 @@ import subprocess
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def add_unix_user(request):
-    userPass = request.POST.get('userPass')
-    userId = request.POST.get('userId')
-
-    try:
-        output = subprocess.check_output(
-            'useradd -p $(openssl passwd -1 ' + userPass + ') -m -s /bin/bash -g hosting-users '
-            + userId,
-            shell=True,
-            stderr=subprocess.STDOUT,
-        )
-        print(output)  # Print the command output for debugging purposes
-    except subprocess.CalledProcessError as e:
-        error_output = e.output.decode('utf-8')
-        print(error_output)  # Print the error output for debugging purposes
-        return JsonResponse({'status': 'error', 'message': 'Error adding Unix user: ' + error_output})
-
-    return JsonResponse({'status': 'success', 'message': 'Unix user added'})
-
 # @csrf_exempt
 # def add_unix_user(request):
 #     userPass = request.POST.get('userPass')
 #     userId = request.POST.get('userId')
 
 #     try:
-#         check_call(
+#         output = subprocess.check_output(
 #             'useradd -p $(openssl passwd -1 ' + userPass + ') -m -s /bin/bash -g hosting-users '
 #             + userId,
-#             shell=True)
-#     except CalledProcessError:
-#         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
+#             shell=True,
+#             stderr=subprocess.STDOUT,
+#         )
+#         print(output)  # Print the command output for debugging purposes
+#     except subprocess.CalledProcessError as e:
+#         error_output = e.output.decode('utf-8')
+#         print(error_output)  # Print the error output for debugging purposes
+#         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user: ' + error_output})
 
 #     return JsonResponse({'status': 'success', 'message': 'Unix user added'})
+
+@csrf_exempt
+def add_unix_user(request):
+    userPass = request.POST.get('userPass')
+    userId = request.POST.get('userId')
+
+    try:
+        subprocess.check_call(
+            '/usr/sbin/useradd -p $(openssl passwd -1 ' + userPass + ') -m -s /bin/bash -g hosting-users ' + userId)
+    except CalledProcessError:
+        return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
+
+    return JsonResponse({'status': 'success', 'message': 'Unix user added'})
 
 
 def add_folder(request):
