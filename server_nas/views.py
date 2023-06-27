@@ -50,7 +50,7 @@ def add_unix_user(request):
     userId = request.POST.get('userId')
 
     try:
-        command = '/usr/sbin/useradd -p ' + userPass + ' -m -s /bin/bash -g hosting-users ' + userId
+        command = '/usr/sbin/useradd -p ' + (str(userPass) if userPass else '') + ' -m -s /bin/bash -g hosting-users ' + userId
         run_command_with_sudo(command)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
