@@ -46,7 +46,7 @@ def run_command_with_sudo(command):
 
 @csrf_exempt
 def add_unix_user(request):
-    password = request.POST.get('password')
+    password = request.POST.get('nim')
     nim = request.POST.get('nim')
     print(password)
     print(nim)
