@@ -46,12 +46,12 @@ def run_command_with_sudo(command):
 
 @csrf_exempt
 def add_unix_user(request):
-    password = request.POST.get('nim')
     nim = request.POST.get('nim')
-    print(password)
+    nim = request.POST.get('nim')
+    
     print(nim)
     try:
-        command = '/usr/sbin/useradd -p ' + str(password) + ' -m -s /bin/bash -g hosting-users ' + str(nim)
+        command = '/usr/sbin/useradd -p ' + str(nim) + ' -m -s /bin/bash -g hosting-users ' + str(nim)
         run_command_with_sudo(command)
     except CalledProcessError:
         return JsonResponse({'status': 'error', 'message': 'Error adding Unix user'})
