@@ -1,4 +1,4 @@
-from subprocess import CalledProcessError
+# from subprocess import CalledProcessError
 import os
 import subprocess
 from django.http import JsonResponse
@@ -32,8 +32,8 @@ def add_unix_user(request):
     print(nim)
     try:
         subprocess.check_call(
-            'useradd -p $(openssl passwd -1 ' + nim + ') -m -s /bin/bash -g hosting-users '
-            + nim, #+ ' && quotatool -u ' + self.userId + ' -bq 450M -l 500M /home',
+            'useradd -p $(openssl passwd -1 ' + str(nim) + ') -m -s /bin/bash -g hosting-users '
+            + str(nim), #+ ' && quotatool -u ' + self.userId + ' -bq 450M -l 500M /home',
             shell=True)
         # command = '/usr/sbin/useradd -p ' + str(nim) + ' -m -s /bin/bash -g hosting-users ' + str(id)
         # run_command_with_sudo(command)
@@ -43,7 +43,7 @@ def add_unix_user(request):
         return JsonResponse({'status': 'success', 'message': 'Unix user added'})
 
 # def add_folder(request):
-#     folder = request.GET.get('folder')
+#     folder = request.GET.get('folder') 
 #     if folder:
 #         if os.path.exists(folder):
 #             response = {'error': 'Folder already exists.'}
