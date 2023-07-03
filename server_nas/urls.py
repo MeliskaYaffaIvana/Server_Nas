@@ -20,7 +20,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('api/add_folder/', views.add_folder, name='add_folder'),
+    # path('api/add_folder/', views.add_folder, name='add_folder'),
     path('api/add_unix_user/', views.add_unix_user, name='add_unix_user'),
 ]
 
