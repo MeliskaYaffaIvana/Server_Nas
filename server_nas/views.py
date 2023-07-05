@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def add_unix_user(request):
     nim = request.POST.get('nim')
-    id = request.POST.get('id')
-    print(id)
     print(nim)
     try:
         subprocess.check_call(
