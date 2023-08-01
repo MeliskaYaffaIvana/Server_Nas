@@ -25,14 +25,16 @@ def izin_user(request):
         container_id = payload.get('container_id')
         nim_user = payload.get('nim_user')
         kategori_kontainer = payload.get('kategori_kontainer')
-
+        print(container_id)
+        print(nim_user)
+        print(kategori_kontainer)
         # Validate the data (add your validation logic here)
         if not container_id or not nim_user or not kategori_kontainer:
             return JsonResponse({'error': 'Invalid data'}, status=400)
 
         # Prepare the chown command
         command = f'chown {nim_user}:hosting-users -R /home/{nim_user}/{kategori_kontainer}'
-
+        print(command)
         try:
             # Execute the chown command using subprocess
             subprocess.run(command, shell=True, check=True)
