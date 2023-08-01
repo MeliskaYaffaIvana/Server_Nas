@@ -21,11 +21,10 @@ def add_unix_user(request):
 @csrf_exempt
 def izin_user(request):
     if request.method == 'POST':
-        data = request.POST  # Use request.POST for application/x-www-form-urlencoded data
-        # Alternatively, use request.body for application/json data
-        container_id = data.get('container_id')
-        nim_user = data.get('nim_user')
-        kategori_kontainer = data.get('kategori_kontainer')
+        payload = json.loads(request.body)
+        container_id = payload.get('container_id')
+        nim_user = payload.get('nim_user')
+        kategori_kontainer = payload.get('kategori_kontainer')
 
         # Validate the data (add your validation logic here)
         if not container_id or not nim_user or not kategori_kontainer:
