@@ -22,7 +22,7 @@ from . import views
 urlpatterns = [
     # path('api/add_folder/', views.add_folder, name='add_folder'),
     path('api/add_unix_user/', views.add_unix_user, name='add_unix_user'),
-    path('api/izin_user', views.izin_user, name='izin_user'),
+    path('api/izin_user/', views.izin_user, name='izin_user'),
 
 ]
 
